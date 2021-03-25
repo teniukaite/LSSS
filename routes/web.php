@@ -49,6 +49,7 @@ Route::middleware('user')->group(function() {
 });
 Route::middleware('admin')->group(function() {
     Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class,'index'])->name('admin');
+    Route::get('/admin/users', [App\Http\Controllers\Admin\AdminController::class,'showUsers'])->name('admin.showUsers');
 });
 Route::middleware('moderator')->group(function() {
     Route::get('/moderator', [App\Http\Controllers\Admin\ModeratorController::class,'index'])->name('moderator');

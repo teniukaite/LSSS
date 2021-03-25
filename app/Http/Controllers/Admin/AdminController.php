@@ -18,10 +18,11 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-//    public function verifyUser($id){
-//        $user = User::find($id);
-//        $user->type = 1;
-//        $user->save();
-//        return redirect()->back();
-//    }
+    public function showUsers()
+    {
+        return view('admin.users.index', [
+            'users' => User::all(),
+        ]);
+    }
+
 }
