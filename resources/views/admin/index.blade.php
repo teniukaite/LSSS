@@ -8,7 +8,7 @@
         }
 
         .sidenav1 {
-            width: 130px;
+            width: 140px;
             position: fixed;
             z-index: 1;
             top: 20px;
@@ -42,7 +42,7 @@
         }
     </style>
 <div class="sidenav1">
-    <a href="#about">Naudotojai</a>
+    <a href="admin/users">Naudotojai</a>
     <a href="#services">Paslaugos</a>
     <a href="#clients">Užsakymai</a>
     <a href="#contact">Projektai</a>

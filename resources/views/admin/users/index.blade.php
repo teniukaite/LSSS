@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h2>Basic HTML Table</h2>
+<h2>Paslaugų gavėjai</h2>
 
 <table id="table_id" style="width:100%">
     <tr>
@@ -18,6 +18,7 @@
         <th></th>
     </tr>
     @foreach($users as $user)
+        @if($user['type'] === 0)
     <tr>
         <td>{{$user['name']}}</td>
         <td>{{$user['surname']}}</td>
@@ -25,9 +26,54 @@
         <td>{{$user['email']}}</td>
         <td><button class="bg-primary">Redaguoti</button></td>
     </tr>
+        @endif
     @endforeach
 </table>
 
+<h2>Paslaugų teikėjai</h2>
+
+<table id="table_id" style="width:100%">
+    <tr>
+        <th>Vardas</th>
+        <th>Pavardė</th>
+        <th>Gimimo data</th>
+        <th>El. paštas</th>
+        <th></th>
+    </tr>
+    @foreach($users as $user)
+        @if($user['type'] === 3)
+        <tr>
+            <td>{{$user['name']}}</td>
+            <td>{{$user['surname']}}</td>
+            <td>{{$user['year_of_birth']}}</td>
+            <td>{{$user['email']}}</td>
+            <td><button class="bg-primary">Redaguoti</button></td>
+        </tr>
+        @endif
+    @endforeach
+</table>
+<h2>Moderatoriai</h2>
+
+<table id="table_id" style="width:100%">
+    <tr>
+        <th>Vardas</th>
+        <th>Pavardė</th>
+        <th>Gimimo data</th>
+        <th>El. paštas</th>
+        <th></th>
+    </tr>
+    @foreach($users as $user)
+        @if($user['type'] === 1)
+        <tr>
+            <td>{{$user['name']}}</td>
+            <td>{{$user['surname']}}</td>
+            <td>{{$user['year_of_birth']}}</td>
+            <td>{{$user['email']}}</td>
+            <td><button class="bg-primary">Redaguoti</button></td>
+        </tr>
+        @endif
+    @endforeach
+</table>
 </body>
 <script>
     $(document).ready( function () {
