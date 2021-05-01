@@ -16,9 +16,10 @@ class CreateScheduleTable extends Migration
         Schema::create('schedule', function (Blueprint $table) {
             $table->id();
             $table->dateTime('free_time')->nullable();
-            $table->dateTime('taken_time')->nullable();
-            $table->integer('fk_client_id');
-            $table->integer('fk_freelancer_id');
+            $table->integer('status')->default(0);
+            $table->integer('offer_id');
+            $table->integer('fk_client_id')->nullable();
+            $table->integer('fk_freelancer_id')->nullable();
             $table->timestamps();
         });
     }

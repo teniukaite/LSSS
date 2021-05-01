@@ -27,10 +27,10 @@
                 <p><b>Kaina:</b> {{ $offers->price }} eur.</p>
                 <p><b>Registracijo laikai:</b> {{ $offers->registration_times }}</p>
              @endforeach
-                @if(Auth::check() && Auth::user()->is_admin)
-                <a href="/offers/{{ $offers->id }}/edit" class="btn btn-primary mb-1 text-white">Redaguoti</a>
-                <a class="btn btn-danger mb-1 text-white">Šalinti</a>
-                @endif
+{{--                @if(Auth::check() && Auth::user()->is_admin)--}}
+{{--                <a href="/offers/{{ $offers->id }}/edit" class="btn btn-primary mb-1 text-white">Redaguoti</a>--}}
+{{--                <a class="btn btn-danger mb-1 text-white">Šalinti</a>--}}
+{{--                @endif--}}
 
                     </div>
                 </div>

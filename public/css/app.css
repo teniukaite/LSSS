@@ -3294,12 +3294,12 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #3490dc;
+  /*color: white;*/
   text-decoration: none;
 }
 
 .btn-link:hover {
-  color: #1d68a7;
+  color: rgb(204, 0, 255);
   text-decoration: underline;
 }
 
@@ -4430,6 +4430,7 @@ input[type=button].btn-block {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+   color: white;
 }
 
 .nav-link:hover,
@@ -4438,7 +4439,6 @@ input[type=button].btn-block {
 }
 
 .nav-link.disabled {
-  color: #6c757d;
   pointer-events: none;
   cursor: default;
 }
@@ -4460,7 +4460,7 @@ input[type=button].btn-block {
 }
 
 .nav-tabs .nav-link.disabled {
-  color: #6c757d;
+  /*color: #6c757d;*/
   background-color: transparent;
   border-color: transparent;
 }
@@ -4556,6 +4556,7 @@ input[type=button].btn-block {
 .navbar-nav .nav-link {
   padding-right: 0;
   padding-left: 0;
+    color: white;
 }
 
 .navbar-nav .dropdown-menu {
@@ -4632,6 +4633,7 @@ input[type=button].btn-block {
   .navbar-expand-sm .navbar-nav .nav-link {
     padding-right: 0.5rem;
     padding-left: 0.5rem;
+      color: white;
   }
 
   .navbar-expand-sm > .container,
@@ -4686,6 +4688,7 @@ input[type=button].btn-block {
   .navbar-expand-md .navbar-nav .nav-link {
     padding-right: 0.5rem;
     padding-left: 0.5rem;
+      color: white;
   }
 
   .navbar-expand-md > .container,

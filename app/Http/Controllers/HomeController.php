@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -15,13 +18,16 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
     public function EditProfile()
     {
         $user = Auth::user();
         return view('profile.change_profile', [
             'user'=>$user
         ]);
+
     }
+
     public function Edit(Request $request){
         $user = User::find($request->get('id'));
         $user->name=$request->get('name');
@@ -29,9 +35,10 @@ class HomeController extends Controller
         return redirect('/home');
     }
 
-    public function delete() {
 
-        $user = Auth::user();
+    public function delete(Request $request) {
+
+        $user = User::find($request->get('id'));
         $user->delete();
         return redirect('/home');
     }
@@ -53,9 +60,18 @@ class HomeController extends Controller
             'new-password' => 'required|string|min:6|confirmed',
         ]);
         //Change Password
-        $user = Auth::user();
+        $user = User::user();
         $user->password = bcrypt($request->get('new-password'));
         $user->save();
         return redirect()->back()->with("success","Slaptažodis pakeistas sėkmingai!");
+    }
+    public function store(Request $request){
+        $request-> validate([
+            'image'=> 'required|mimes:jpg, png, jpeg|max:5048'
+        ]);
+
+
+        return redirect('/profile/index');
+
     }
 }

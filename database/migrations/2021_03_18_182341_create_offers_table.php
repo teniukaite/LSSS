@@ -18,8 +18,10 @@ class CreateOffersTable extends Migration
             $table->string('service_name');
             $table->string('description');
             $table->double('price');
-            $table->dateTime('registration_times');
             $table->foreignId('freelancerId');
+            $table->string('category');
+            $table->string('city');
+            $table->foreignId('reviewId');
             $table->timestamps();
         });
     }
