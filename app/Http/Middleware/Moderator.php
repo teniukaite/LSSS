@@ -16,7 +16,7 @@ class Moderator
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->user()->type != 1){
+        if($request->user()->type != 1 ){
             return redirect('home');
         }
         return $next($request);
