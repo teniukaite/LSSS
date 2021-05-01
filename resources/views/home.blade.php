@@ -1,62 +1,48 @@
 @extends('layouts.app')
-
-@section('nav-items')
 <style>
-    #footer-gradient {
-    position: fixed;
-    bottom: 0cm;
-    left: 0cm;
-    right: 0cm;
-    height: 2cm;
-    color: #ffffff;
-    background-color: #a3297a;
-    text-align: center;
+    .btn-link {
+        color: rgb(204, 153, 255)!important;
     }
+    .btn-link:hover {background-color:rgb(153, 51, 102);}
 
-    #footer-gradient a{
-    color: #ffe6ff;
-    }
-    .button{
-    position:relative;
-    z-index: 50;
-    border: black;
-    }
-    body {
-    background-image: url("https://www.wallpapertip.com/wmimgs/197-1975687_light-purple-gradient-gradient-background-light-color.jpg");
-    background-repeat: no-repeat;
-    }
+
     </style>
-@endsection
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Pradžia</div>
+                <h1><div class="card-header">Pradžia</div></h1>
 
-                <div class="card-body">
+                <div class="card-body thead-light">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
 
-                    Jūs prisijungėte!
+                  <h4>Sveikiname prisijungus!</h4>
 
-                    @if(Auth::user()->is_admin)
+{{--                    @if(Auth::user()->is_admin)--}}
 
-                        <p>
-                            Peržiūrėkite <a href="{{ url('admin/tickets') }}">užklausas</a>.
-                        </p>
-                    @else
+{{--                        <h3>--}}
+{{--                         Peržiūrėkite <a class="btn-link" href="{{ url('admin/tickets') }}">užklausas</a>.--}}
+{{--                            </h3>--}}
+{{--                    @else @if(Auth::user()->is_admin)--}}
 
-                        <p>
-                            Peržiūrėkite savo <ahref="{{ config('app.url')}}/offers">užsakytas paslaugas</a> arba <a href="{{ config('app.url')}}/createoffers">sukurkite naują</a>.<br>
-                            Peržiūrėkite <href="{{ config('app.url')}}/offers">paslaugų pasiūlymus</a>.
-                        </p>
+{{--                        <h3>--}}
+{{--                         Peržiūrėkite <a class="btn-link" href="{{ url('admin/tickets') }}">užklausas</a>.--}}
+{{--                            </h3>--}}
+{{--                    @else--}}
 
-                    @endif
+                        <h5>
+                             <a class="btn-link" href="{{ config('app.url')}}/offers">Peržiūrėkite  sistemoje teikiamas paslaugas </a>
+{{--                            arba <a class="btn-link" href="{{ config('app.url')}}/createoffers">sukurkite naują</a>. <br>--}}
+{{--                            Peržiūrėkite <a class="btn-link" href="{{ config('app.url')}}/offers">paslaugų pasiūlymus</a>.--}}
+                        </h5>
+
+{{--                    @endif--}}
                 </div>
             </div>
         </div>
