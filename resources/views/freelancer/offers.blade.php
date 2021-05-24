@@ -1,83 +1,90 @@
-@extends('layouts.app')
-
-    <style>
-        /*div, span {*/
-        /*    display: inline-list-item;*/
-        /*}*/
-        /*div {*/
-        /*    float: left;*/
-        /*}*/
-        /*div {*/
-        /*    clear: both;*/
-        /*}*/
-        /*.container{*/
-        /*    display: inline-block;*/
-        /*    grid-template-columns: 1fr 1fr 1fr 1fr ;*/
-        /*    align-self: center;*/
-        /*}*/
-        /*p {*/
-        /*    flex: 1;*/
-        /*}*/
-        /*ul {*/
-        /*    list-style-type: none;*/
-        /*    margin: 0;*/
-        /*    padding: 0;*/
-        /*    overflow: hidden;*/
-        /*    background-color: white;*/
-        /*}*/
-        p{color:black!important}
-        p.inset {border-style: inset; border-color: rgb(102, 0, 102); background-color: black}
-        p.border {border-style: inset; border-color: black}
-        h1.inset {border-style: inset; border-color: rgb(102, 0, 102)}
-        h2.inset {border-style: inset; border-color: rgb(102, 0, 102); background-color: black}
-        .button1 {
-            background-color: black;
-            color: violet;
-            border: 2px black;
-        }
-
-        .button:hover {
-            background-color: violet; /* Green */
-            color: black;
-        }
+<!DOCTYPE html>
+<html lang="en-gb" dir="ltr">
 
 
-    </style>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LSSS</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+    <script src="js/uikit.js" ></script>
+</head>
+<body>
+<header class="uk-cover-container uk-background-cover uk-background-norepeat uk-background-center-center"
+        style="background-image: url(img/logo4.png);">
+    <div class="uk-overlay uk-position-cover uk-overlay-video"></div>
+    <div data-uk-sticky="animation: uk-animation-slide-top; sel-target: .uk-navbar-container;
+	  cls-active: uk-navbar-sticky; cls-inactive: uk-navbar-transparent uk-light; top: 500">
+        <nav class="uk-navbar-container uk-letter-spacing-small uk-text-bold">
+            <div class="uk-container uk-container-large">
+                <div class="uk-position-z-index" data-uk-navbar>
+                    <div class="uk-navbar">
+                        <a class="uk-navbar-item uk-logo" href="/">Pagrindinis</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    </div>
+</header>
+<div id="about" class="uk-section uk-section-muted uk-section-large">
+    <div class="uk-container">
+        <div class="uk-width-4-5@m">
+            <h2 class="uk-heading-small"><mark>Jūsų</mark> teikiamos <mark> paslaugos</mark></h2>
+        </div>
+         <a class="uk-button uk-button-primary uk-button-large" type="submit" href="/files/index">Mano darbų pazydžiai</a>
+        <a class="uk-button uk-button-secondary uk-button-large" type="submit" href="/freelancer/createoffers">Įkelti naują pasiūlymą</a>
+        @foreach($allOffers as $offers)
+        <div class="uk-child-width-auto\@s uk-child-width-auto\@s uk-margin-large-top uk-grid-match" data-uk-grid>
+            <div>
+                <div class="uk-card uk-card-small uk-card-border">
+                    <div class="uk-card-media-top uk-position-relative uk-light">
+                        <div class="uk-position-cover uk-overlay-xlight"></div>
 
-@section('content')
-    <a class="button button1 align-self-lg-center" type="submit" href="/freelancer/createoffers">Įkelti naują pasiūlymą</a>
-<h2 align="center" class="inset"><b>Paslaugų pasiūlymai</b></h2>
-    <h2  class="inset" align="center"><b>Čia pateiktos visos jūsų teikiamos paslaugos</b></h2>
+                        <div class="uk-position-top-left">
+                            <span class="uk-text-bold uk-text-price uk-text-small"> {{ $offers->price }} eur.</span>
+                        </div>
 
+                    </div>
 
-{{--        <div class="column" style="background-color:#aab;">--}}
+                    <div class="uk-card-body">
+                        <br>
+                        <h3 class="uk-card-title uk-margin-small-bottom">{{ $offers->service_name }}</h3>
+                        <div class="uk-text-muted uk-text-small">{{ $offers->description }}</div>
+                        <h3 class="uk-card-title uk-margin-small-bottom"> {{ $offers->city }}</h3>
+                        <div class="uk-text-muted uk-text-small">{{ $offers->registration_times }}</div>
 
+                        @foreach($categories as $category)
+                            @if ($category->id == $offers->category)
+                                <h4 class="border"><b>Kategorija:</b> {{ $category->name}} </h4>
+                            @endif
+                        @endforeach
 
-                    @foreach($allOffers as $offers)
-                        <ul>
-                            <div class="container">
-                            <p style="color: white" class="inset">{{ $offers->service_name }}</p>
-                            <p class="border"><b>Aprašymas:</b> {{ $offers->description }}</p>
-                            <p class="border"><b>Kaina:</b> {{ $offers->price }} eur.</p>
-                            <p class="border"><b>Miestas:</b> {{ $offers->city }} </p>
-                                @foreach($categories as $category)
-                                @if ($category->id == $offers->category)
-                                    <p class="border"><b>Kategorija:</b> {{ $category->name}} </p>
-                                @endif
-                                @endforeach
+                    </div>
 
-                            <p class="border"><b>Registracijos laikas:</b> {{ $offers->registration_times }}</p>
-                             <a href="/offers/{{ $offers->id }}" class="button mb-1 btn-block text-white">Peržiūrėti</a>
-                            </div>
-                        </ul>
+                    <a href="/offers/{{ $offers->id }}/edit" class="uk-button uk-button-primary uk-button-large">Redaguoti</a>
 
-
-
-                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
 
 
 
 
-{{--        </div>--}}
-
-@endsection
+<footer class="uk-border-dark-top">
+    <div class="uk-section uk-section-secondary">
+        <div class="uk-container uk-h6">
+            <div class="uk-flex-first@m">
+                <h2>   LSSS - Laisvai samdomų specialistų sistema - 2021.</h2>
+                <h3><a href="mailto:karrad@ktu.edu">Karolina Radzevičiūtė</a></h3>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

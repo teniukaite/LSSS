@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Neatitinka įrašų',
+    'failed' => 'Vartotojas nėra registruotas sistemoje. Pasitikrinkite duomenis arba užsiregistruokite.',
     'password' => 'Pateiktas neteisingas slaptažodis.',
     'throttle' => 'Per daug bandymų prisijungti. Bandykite dar kartą po: sekundžių sekundžių. ',
 

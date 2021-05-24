@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\admin;
+use App\Http\Middleware\Admin;
 use App\Http\Middleware\Freelancer;
 use App\Http\Middleware\Moderator;
 use App\Http\Middleware\User;

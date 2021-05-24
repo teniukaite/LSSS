@@ -1,53 +1,56 @@
 @extends('layouts.app')
-<style>
-    .btn-link {
-        color: rgb(204, 153, 255)!important;
-    }
-    .btn-link:hover {background-color:rgb(153, 51, 102);}
 
+@section('style')
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 30vh;
+            object-fit: cover;
+        }
 
     </style>
+@endsection
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <h1><div class="card-header">Pradžia</div></h1>
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
+        </div>
+    @endif
 
-                <div class="card-body thead-light">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-20">
+                <div class="card">
+
+                    </div>
+                    <br>
+
+
+
+                    <div class="card-body">
+                        <div class="uk-container uk-width-1-1 uk-margin-bottom uk-form-horizontal uk-nav-center"  data-uk-height-viewport="offset-top: false">
+                        <div class="uk-container uk-container-large uk-margin-top uk-width-1-1 ">
+                            @if(Auth::check() && Auth::user()->type==1)
+                                <a class="button button-primary button-large" style="margin-bottom: 10px" href="/freelancer/offers">Mano <br>teikiamos <br>paslaugos<br><img style="width: 150px" src="img/Services.png"></a>&emsp;&emsp;
+                                <a class="button button-primary button-large" style="margin-bottom: 10px"  href="/schedule/index">Tvarkaraštis <br><img style="width: 190px" src="img/Schedule.png"></a>&emsp;&emsp;
+                                <a class="button button-primary button-large" style="margin-bottom: 10px"  href="/files/index">Mano<br> darbų<br> pavyzdžiai<br> <img style="width: 190px" src="img/workexamples.png"></a>&emsp;&emsp;
+                                <a class="button button-primary button-large" style="margin-bottom: 10px" href="/freelancerorders">Gauti <br>užsakymai<br><img style="width: 190px" src="img/orders2.png"></a>&emsp;
+                            @endif
                         </div>
-                    @endif
+                    </div>
+            </div>
 
-                  <h4>Sveikiname prisijungus!</h4>
 
-{{--                    @if(Auth::user()->is_admin)--}}
+        </div>
 
-{{--                        <h3>--}}
-{{--                         Peržiūrėkite <a class="btn-link" href="{{ url('admin/tickets') }}">užklausas</a>.--}}
-{{--                            </h3>--}}
-{{--                    @else @if(Auth::user()->is_admin)--}}
-
-{{--                        <h3>--}}
-{{--                         Peržiūrėkite <a class="btn-link" href="{{ url('admin/tickets') }}">užklausas</a>.--}}
-{{--                            </h3>--}}
-{{--                    @else--}}
-
-                        <h5>
-                             <a class="btn-link" href="{{ config('app.url')}}/offers">Peržiūrėkite  sistemoje teikiamas paslaugas </a>
-{{--                            arba <a class="btn-link" href="{{ config('app.url')}}/createoffers">sukurkite naują</a>. <br>--}}
-{{--                            Peržiūrėkite <a class="btn-link" href="{{ config('app.url')}}/offers">paslaugų pasiūlymus</a>.--}}
-                        </h5>
-
-{{--                    @endif--}}
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-</div>
 
 @endsection
-
+@section('footer')
+@endsection

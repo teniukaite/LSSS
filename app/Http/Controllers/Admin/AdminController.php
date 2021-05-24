@@ -10,12 +10,16 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-       // $this->middleware(['auth', 'admin']);
     }
 
-    public function index(){
+    public function index()
+    {
+        $users = User::all();
+        $count = count($users);
 
-        return view('admin.index');
+        return view('admin.index',[
+            'count' => $count
+        ]);
     }
 
     public function showUsers()
@@ -25,4 +29,23 @@ class AdminController extends Controller
         ]);
     }
 
+    public function showOneUser($id)
+    {
+        return view ('admin.users.oneUser', [
+            'user' => User::findOrFail($id),
+            ]);
+    }
+
+    public function statistics ()
+    {
+        return view('admin.statistics.index');
+    }
+    public function bonus(Request $request)
+    {
+        $user = User::find($request->get('id'));
+        $user->points = $user->points + $request->get('id');
+        $user->save();
+
+        return view('admin.users.oneUser');
+    }
 }
