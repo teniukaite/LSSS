@@ -120,23 +120,25 @@ class ProjectController extends Controller
 
                         if ($request['id'] != $project->fk_service_id) {
                             $counter++;
+                            dd($counter);
                         }
                     }
+       }
 }
-                        if($counter>0)
-                        {
-                            dd($counter);
-                          Project::create([
-                                'client_id' => Auth::user()->id,
-                                'fk_service_id' => $request['id'],
-                                'fk_freelancer_id' => $request['freelancerId'],
-                                'price' => $request['price'],
-                            ]);
-
-                            return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
-                        } else {
-                            return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų kuriamą projektą');
-                        }
+//                        if($counter>0)
+//                        {
+//
+//                          Project::create([
+//                                'client_id' => Auth::user()->id,
+//                                'fk_service_id' => $request['id'],
+//                                'fk_freelancer_id' => $request['freelancerId'],
+//                                'price' => $request['price'],
+//                            ]);
+//
+//                            return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
+//                        } else {
+//                            return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų kuriamą projektą');
+//                        }
 
 
 //                else {
@@ -148,7 +150,7 @@ class ProjectController extends Controller
 //            ]);
 //            return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
 //        }
-    }
+//    }
 
 
 
