@@ -17,6 +17,21 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{session('success')}}
+                        </div>
+                    @endif
+                    @if(session('danger'))
+                        <div class="alert alert-danger">
+                            {{session('danger')}}
+                        </div>
+                    @endif
+                        @if(session('status'))
+                            <div class="alert alert-success">
+                                {{session('status')}}
+                            </div>
+                        @endif
                     <div class="card-header"><strong>{{ $offer->service_name }} </strong></div>
                     <div class="card-body">
                         @foreach($categories as $category)
@@ -35,8 +50,6 @@
                                             <p style="margin-bottom: 0px; font-size: 20px!important; font-weight: bold;"><b style="color:rgb(204, 51, 153);">MIESTAS:</b>
                                             {{ $offer->city }}</p>
 
-
-
                                             @foreach( $users as $user)
                                                 @if ($user->id == $offer->freelancerId)
                                                     <p style="margin-bottom: 0px; font-size: 20px!important; font-weight: bold;"><b style="color:rgb(204, 51, 153);">SPECIALISTAS: </b>{{ $user->name}} {{ $user->surname}}</p>
@@ -45,7 +58,7 @@
                                                 @endif
                                             @endforeach
 
-
+                                            @if ($count>0)
                                             <table class="table table-striped center" style="margin-bottom: 20px; margin-top: 30px; width: auto;">
                                                 <th style="color: #602040">REGISTRACIJAI GALIMI LAIKAI</th>
                                                 @foreach($times as $time)
@@ -56,6 +69,13 @@
                                                     @endif
                                                 @endforeach
                                             </table>
+                                            @endif
+
+                                            @if ($count<=0)
+                                                <table class="table table-striped center" style="margin-bottom: 20px; margin-top: 30px; width: auto;">
+                                                <th style="color: #602040">REGISTRACIJAI GALIMŲ LAIKŲ NĖRA</th>
+                                                </table>
+                                            @endif
                                         </div>
                                         <p style="color: rgb(204, 51, 153);">DARBŲ PAVYZDŽIAI</p>
                                             <div class="uk-child-width-1-4">
@@ -66,17 +86,53 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                                @if (Route::has('login'))
-                                                 @auth
-                                                   <a href="/order/{{ $offer->id }}/create" class="button button-primary button-large" style="margin-bottom: 10px">Užsisakyti</a>
-                                                  @endauth
-                                                @endif
-                                                   <a href="/offers" class="button button-secondary button-large">Atgal</a>
-                                        </div>
-                          </div>
-                        </div>
-                     </div>
-                </div>
-            @endsection
-         @section('footer')
+                        @if ($count>0)
+
+                            @if (Route::has('login'))
+                                @auth
+                                    @if(Auth::check() && Auth::user()->id != $offer->freelancerId )
+                                    <a href="/order/{{ $offer->id }}/create" class="button button-primary button-large" style="margin-bottom: 10px">Užsisakyti</a>
+                                    <div class="form-group">
+                                        <input type="hidden" value="{{ $offer->id }}" name="id" />
+                                        <input type="hidden" value="{{ $offer->freelancerId }}" name="freelancerId" />
+                                        <input type="hidden" value="{{ $offer->price }}" name="price" />
+                                    </div>
+                                    <a href="/projects/{{ $offer->id }}/create" class="button button-primary button-large" style="margin-bottom: 10px">Įtraukti į projektą</a>
+                                @endif
+                                @endauth
+                            @endif
+                        @endif
+
+                        @if($reviews->count())
+                            <div class="card mt-3">
+                                <div class="card-header"><strong>Atsiliepimai</strong></div>
+                                    @foreach ($reviews as $review)
+                                        @if( $offer->id === $review->fk_offer_id)
+                                            @foreach ($users as $user)
+                                                <div >
+                                                    {{--                                @if(Auth::check() && Auth::user()->id === $review->fk_client_id)--}}
+                                                    @if( $user->id === $review->fk_client_id)
+                                                        {{$user->name}} {{$user->surname}}
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                            <div class="card-body">
+                                                <h6 class="card-subtitle mb-2 text-muted">{{ $review->created_at }}</h6>
+                                                <p class="card-text"><strong> {{ $review->rating }}⭐/10⭐</strong> {!! nl2br(e($review->text)) !!}</p>
+                                                <hr>
+                                            </div>
+                                @endif
+                                @endforeach
+                                @if($offer->id != $review->fk_offer_id)
+                                    <div class="card-body"><strong>Apgailestaujame, tačiau ši paslauga dar neturi atsiliepimų.</strong></div>
+                                @endif
+                            </div>
+                      </div>
+                  </div>
+               </div>
+                 <a href="/offers" class="button button-secondary button-large" style="margin-top: 20px">Atgal</a>
+            @endif
+        </div>
+@endsection
+@section('footer')
 @endsection

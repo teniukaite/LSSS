@@ -20,11 +20,7 @@ class ScheduleController
                         return sprintf('%s%s', $inquiry->date, $inquiry->time);
                     })->values()
                 ]);
-
-//            }
-//        }
-
-     }
+    }
     public function openAddTime($id)
     {
 
@@ -41,7 +37,6 @@ class ScheduleController
     {
         $request->validate([
             'date' => 'required|date|after_or_equal:today',
-//            'time' => 'required|date_format:HH:mm',
         ]);
 
         $fk_freelancer_id  = Auth::user()->id;
@@ -60,13 +55,4 @@ class ScheduleController
 
         return redirect('/schedule/index')->with("status", "Registracijos laikas ištrintas sėkmingai!");
     }
-//    public function destroy($id)
-//    {
-//        $schedule = Schedule::find($id);
-//        $schedule->delete();
-//
-//        return redirect('/schedule/index')->with('success', 'Contact deleted!');
-//    }
-
-
 }

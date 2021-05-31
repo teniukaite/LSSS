@@ -11,12 +11,16 @@ class Project extends Model
     protected $table = 'project';
     protected $fillable = [
         'id',
+        'status',
+        'project_name',
         'client_id',
         'fk_service_id',
         'price',
+        'price_content',
         'fk_client_id',
         'fk_freelancer_id',
         'fk_review_id',
+        'time_id',
         'description',
     ];
 }

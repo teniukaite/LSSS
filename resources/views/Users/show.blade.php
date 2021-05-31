@@ -36,7 +36,16 @@
                 <div class="uk-card-header"><strong>Šiuo metu jūsų užsakytos paslaugos</strong></div>
 
                 <div class="uk-card-body">
-
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{session('success')}}
+                        </div>
+                    @endif
+                    @if(session('danger'))
+                        <div class="alert alert-danger">
+                            {{session('danger')}}
+                        </div>
+                    @endif
                     <table class="uk-table uk-table-striped">
                         <tr>
                             <th>ID</th>
@@ -50,14 +59,7 @@
                                 <td><a href="/orders/{{ $offer->id }}" class="btn btn-success text-white">Peržiūrėti</a></td>
                                 <td><a href="/orders/{{ $offer->id }}/edit" class="btn btn-primary text-white">Redaguoti</a></td>
                                 <td>
-                                    {{--                                    <form action="{{ route('orders.destroy', $offer->id) }}" method="POST">--}}
-                                    {{--                                        @csrf--}}
-                                    {{--                                        @method('DELETE')--}}
-                                    {{--                                        <button type="submit" class="btn btn-danger text-white">Šalinti</button>--}}
-                                    {{--                                    </form>--}}
                                 </td>
-
-
                             </tr>
                         @endforeach
                     </table>

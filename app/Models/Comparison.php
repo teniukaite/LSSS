@@ -14,4 +14,8 @@ class Comparison extends Model
         'clientId',
         'offerId',
     ];
+    public function offer()
+    {
+        return $this->belongsTo(Offers::class);
+    }
 }

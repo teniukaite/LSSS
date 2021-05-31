@@ -1,97 +1,72 @@
-<!DOCTYPE html>
-<html lang="en-gb" dir="ltr">
-
-
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LSSS</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700&amp;display=swap" rel="stylesheet">
-    <link href="css/main.css"  rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
-</head>
-<body>
-
-<header class="uk-cover-container uk-background-cover uk-background-norepeat uk-background-center-center"
-        style="background-image: url(img/logo4.png);">
-    <div class="uk-overlay uk-position-cover uk-overlay-video"></div>
-    <div data-uk-sticky="animation: uk-animation-slide-top; sel-target: .uk-navbar-container;
-	  cls-active: uk-navbar-sticky; cls-inactive: uk-navbar-transparent uk-light; top: 500">
-        <nav class="uk-navbar-container uk-letter-spacing-small uk-text-bold">
-            <div class="uk-container uk-container-large">
-                <div class="uk-position-z-index" data-uk-navbar>
-                    <div class="uk-navbar">
-                        <a class="uk-navbar-item uk-logo" href="/">Pagrindinis</a>
-                    </div>
-                    <div class="uk-navbar-right">
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
-<div id="about" class="uk-section uk-section-muted uk-section-large">
-    <div class="uk-container">
-        <div class="uk-width-4-5@m">
-            <h4 class="uk-heading-small"><mark>Laisvai samdomo specialisto</mark> profilis</h4>
-        </div>
-@foreach($allFreelancers as $freelancer)
-
-    @if ($freelancer->id ==3)
-
-        <div class="uk-child-width-1-1 uk-margin-large-top uk-grid-match" data-uk-grid>
-            <div>
-                <div class="uk-card uk-card-small uk-card-border">
-                    <div class="uk-card-media-top uk-position-relative uk-light">
-                        <div class="uk-position-cover uk-overlay-xlight"></div>
-
-                        <div class="uk-position-top-left">
-                            <span class="uk-text-bold uk-text-price uk-text-small"> {{ $freelancer->name }}  {{ $freelancer->surname }} </span>
-                            {{--                                <img name="photo" class="uk-border-circle" alt="{{ $freelancer->name }}" src="{{ $freelancer->photo }}"readonly/>--}}
+@extends('layouts.app')
+@section('style')
+    <style>
+        .half {
+            white-space:nowrap;
+        }
+        .half img {
+            display:inline;
+        }
+        .half figcaption {
+            display:block
+        }
+    </style>
+@endsection
+@section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{session('success')}}
                         </div>
-
-                    </div>
-                    <br>
-                    <img name="photo" class="uk-border-circle"width="200px"  alt="{{ $freelancer->name }}" src="{{ $freelancer->photo }}"readonly/>
-                    <div class="uk-card-title uk-margin-small-bottom"><h6>Gimimo metai:  {{ $freelancer->year_of_birth }}</h6></div>
-                    <div class="uk-text-muted uk-text-small"><h6>El.paštas:{{ $freelancer->email }}</h6></div>
-                    <div class="uk-card-title uk-margin-small-bottom"><h6>Telefono numeris: {{ $freelancer->phoneNumber }}</h6></div>
-                    <div class="uk-text-muted uk-text-small"><h6>Lytis: {{ $freelancer->gender }}</h6></div>
-                    <div class="uk-text-muted uk-text-small"><h6>Įvertinimas: {{ $freelancer->points }} taškai</h6></div>
-{{--<div class="caruk-d"></div>--}}
-                    <h4 class="uk-heading-small"><mark>Visos teikiamos</mark> paslaugos</h4>
-                    @foreach($allCompetencies as $competencies)
-                        <div class="uk-card uk-width-1-1 uk-card-border">
-                            <div class="uk-text-muted uk-text-small">  <h4 class="border"><b>Išsilavinimas:</b> {{ $competencies->education}} </h4></div>
-                            <div class="uk-text-muted uk-text-small">  <h4 class="border"><b>Aprašymas:</b> {{ $competencies->description}} </h4></div>
-                </div>
-                    @endforeach
-
-                    <a class="uk-button uk-button-primary uk-button-large" href="{{ URL::previous() }}">Atgal</a>
-
+                    @endif
+                    @if(session('danger'))
+                        <div class="alert alert-danger">
+                            {{session('danger')}}
+                        </div>
+                    @endif
+                    @if(session('status'))
+                        <div class="alert alert-success">
+                            {{session('status')}}
+                        </div>
+                    @endif
+                    <div class="card-header"><strong>{{ $freelancer->name }} {{ $freelancer->surname }} </strong></div>
+                    <div class="card-body">
+                        <img name="photo" class="border-circle" style="width: 200px; border-radius: 20%; margin-bottom: 20px" alt="{{ $freelancer->name }}" src="{{ $freelancer->photo }}"readonly/>
+                        <h4><b style="text-transform: uppercase;">Gimimo metai: </b> {{ $freelancer->year_of_birth }}</h4>
+                        <h4><b style="text-transform: uppercase;">El.paštas:</b>{{ $freelancer->email }}</h4>
+                        <h4><b style="text-transform: uppercase;">Telefono numeris: </b>{{ $freelancer->phoneNumber }}</h4>
+                        <h4><b style="text-transform: uppercase;">Lytis: </b>{{ $freelancer->gender }}</h4>
+                        @foreach($allCompetencies as $competencies)
+                            @if($competencies->freelancerID==$freelancer->id)
+                                <h4><b style="text-transform: uppercase;">Išsilavinimas:</b> {{ $competencies->education}} </h4>
+                                <h4 style="width: 500px; margin-right: auto; margin-left: auto"><b style="text-transform: uppercase;">Aprašymas:</b> {{ $competencies->description}} </h4>
+                                @if ($rating>0)
+                                 <h4><b style="text-transform: uppercase;">Įvertinimas:</b> {{substr($rating,0,4)}}⭐/10⭐</h4>
+                                @endif
+                            @endif
+                        @endforeach
+                        <h2 style="text-transform: uppercase; margin-top: 30px;"><b>Visos teikiamos paslaugos</b></h2>
+                        <table class="table table-striped center" style="margin-bottom: 20px; margin-top: 5px; width: auto;">
+                            @foreach($offers as $offer)
+                            @endforeach
+                        @foreach($offers as $offer)
+                            @if($offer->freelancerId==$freelancer->id)
+                                <tr>
+                                <th>{{$offer->service_name}}</th>
+                                <th>   <a href="/offers/{{ $offer->id }}" class="button button-primary ">Peržiūrėti</a></th>
+                                </tr>
+                            @endif
+                        @endforeach
+                        </table>
+                        <a href="/freelancer/freelancerslist" class="button button-secondary button-large">Atgal</a>
+                        </div>
                 </div>
             </div>
         </div>
-    @endif
-@endforeach
     </div>
-</div>
-
-<div id="about" class="uk-section uk-section-muted uk-section-large">
-    <div class="uk-container">
-        <div class="uk-width-4-5@m">
-        </div>
-    </div>
-</div>
-<footer class="uk-border-dark-top">
-    <div class="uk-section uk-section-secondary">
-        <div class="uk-container uk-h6">
-            <div class="uk-flex-first@m">
-                <h2>   LSSS - Laisvai samdomų specialistų sistema - 2021.</h2>
-                <h3><a href="mailto:karrad@ktu.edu">Karolina Radzevičiūtė</a></h3>
-            </div>
-        </div>
-    </div>
-</footer>
-</body>
-</html>
+@endsection
+@section('footer')
+@endsection

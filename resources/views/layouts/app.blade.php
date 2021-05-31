@@ -57,11 +57,11 @@
 {{--                        </li>--}}
                     @endauth
                 </ul>
-                @if(Auth::check() && Auth::user()->type==0)
-                    <a class="dropdown-item" href="/freelancer/question">
-                        {{ __('Teikti savo paslaugas') }}
-                    </a>
-                @endif
+{{--                @if(Auth::check() && Auth::user()->type==0)--}}
+{{--                    <a class="dropdown-item" href="/freelancer/question">--}}
+{{--                        {{ __('Teikti savo paslaugas') }}--}}
+{{--                    </a>--}}
+{{--                @endif--}}
                 <!-- Right Side Of Navbar -->
 
                 <ul class="navbar-nav ml-auto">
@@ -96,7 +96,7 @@
                                 <a class="dropdown-item" href="/comparison">
                                     {{ __('Lyginamos paslaugos') }}
                                 </a>
-                                <a class="dropdown-item" href="/comparison">
+                                <a class="dropdown-item" href="/projects">
                                     {{ __('Projektai') }}
                                 </a>
                                 @if(Auth::check() && Auth::user()->type==1)

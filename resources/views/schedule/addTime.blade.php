@@ -119,15 +119,7 @@
 
 
 </div>
-<footer class="uk-border-dark-top">
-    <div class="uk-section uk-section-secondary">
-        <div class="uk-container uk-h6">
-            <div class="uk-flex-first@m">
-                <h2>   LSSS - Laisvai samdomų specialistų sistema - 2021.</h2>
-                <h3><a href="mailto:karrad@ktu.edu">Karolina Radzevičiūtė</a></h3>
-            </div>
-        </div>
-    </div>
-</footer>
+@section('footer')
+@endsection
 </body>
 </html>

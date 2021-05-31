@@ -1,6 +1,7 @@
 
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -9,7 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\FreelancerController;
+//use App\Http\Controllers\FreelancerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OffersController;
 use App\Models\Categories;
@@ -39,11 +40,8 @@ Route::get('/logout', function (){
     return redirect('/login');
 });
 
-Route::get('profile', function() {
-    $user = Auth::user();
-    return view('profile.index', compact('user'));
-});
-
+Route::get('/profile', [\App\Http\Controllers\HomeController::CLASS, 'ViewProfile']);
+Route::post('/profile', [\App\Http\Controllers\HomeController::CLASS, 'Edit']);
 Route::get('/upload-file', [\App\Http\Controllers\FreelancerController::CLASS, 'createForm']);
 
 Route::post('/upload-file', [\App\Http\Controllers\FreelancerController::CLASS, 'fileUpload'])->name('fileUpload');
@@ -51,19 +49,9 @@ Route::get('freelancer/question',[\App\Http\Controllers\FreelancerController::CL
 Route::resource('/competencies',\App\Http\Controllers\FreelancerController::class);
 Route::get('freelancer/getcompetencies',[\App\Http\Controllers\FreelancerController::CLASS,'uploadCompetencies'])->name('uploadCompetencies');
 Route::post('/competencies',[\App\Http\Controllers\FreelancerController::CLASS,'store'])->name('/competencies');
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//Route::post('/my-profile-update', [App\Http\Controllers\HomeController::class, 'profileupdate'])->name('myprofileupdate');
 
 Route::middleware('user')->group(function() {
-
-//    Route::get('/change_profile',[\App\Http\Controllers\HomeController::CLASS,'EditProfile'])->name('editprofile');
-//    Route::post('/change_profile',[\App\Http\Controllers\HomeController::CLASS,'Edit'])->name('updateprofile');
-//    Route::get('/change_password',[\App\Http\Controllers\HomeController::CLASS,'showChangePasswordForm'])->name('showChangePasswordForm');
-//    Route::post('/change_password',[\App\Http\Controllers\HomeController::CLASS,'changePassword'])->name('changePassword');
-   // Route::delete('/delete',[\App\Http\Controllers\HomeController::CLASS,'delete'])->name('delete');
-  //  Route::get('/subscribe',[\App\Http\Controllers\HomeController::CLASS,'subscribe'])->name('subscribe');
 
 });
 Route::middleware('freelancer')->group(function() {
@@ -97,26 +85,16 @@ Route::post('/offers/filter', [OffersController::class,'filter'])->name('filter'
 Route::get('freelancer/createoffers',[\App\Http\Controllers\OffersController::CLASS,'create'])->name('createoffers');
 
 Route::post('/saveoffers',[\App\Http\Controllers\OffersController::CLASS,'store'])->name('saveoffers');
-
-//Route::get('/offer_photo_upload', [\App\Http\Controllers\OffersController::CLASS, 'createForm']);
-//Route::post('/offer_photo_upload', [\App\Http\Controllers\OffersController::CLASS, 'photoUpload'])->name('photoUpload');
-
 Route::post('freelancer/editoffer',[\App\Http\Controllers\OffersController::CLASS,'update'])->name('editoffers');
 Route::get('profile/change_password',[\App\Http\Controllers\HomeController::CLASS,'showChangePasswordForm'])->name('showChangePasswordForm');
 Route::post('/change_password',[\App\Http\Controllers\HomeController::CLASS,'changePassword'])->name('changePassword');
 Route::get('/profile/edit',[\App\Http\Controllers\HomeController::CLASS,'EditProfile']);
 Route::post('/profile',[\App\Http\Controllers\HomeController::CLASS,'Edit'])->name('Edit');
-//Route::resource('/profile',\App\Http\Controllers\HomeController::class);
 Route::post('/users/{{ $offers->id }}/offershow',[\App\Http\Controllers\OffersController::CLASS,'show'])->name('show');
-
 Route::get('/schedule/index',[\App\Http\Controllers\ScheduleController::CLASS,'index'])->name('schedule');
 Route::get('/freelancer/freelancerslist',[\App\Http\Controllers\FreelancerController::CLASS,'allFreelancers'])->name('freelancers');
-
-//Route::resource('/freelancers',\App\Http\Controllers\FreelancerController::class);
-Route::get('/freelancer/{id}/freelancerInfoView', [App\Http\Controllers\FreelancerController::class,'showFreelancerProfile'])->name('showFreelancerProfile');
 Route::get('/schedule/{id}/addTime',[\App\Http\Controllers\ScheduleController::class,'openAddTime']);
 Route::post('/schedule/index',[\App\Http\Controllers\ScheduleController::class,'store'])->name('addTime');
-//Route::post('/schedule/{{ $time->id }}',[\App\Http\Controllers\ScheduleController::class,'destroy']);
 Route::resource('/schedule',\App\Http\Controllers\ScheduleController::class);
 Route::resource('/orders',OrderController::class);
 Route::get('/order/{id}/create',[OrderController::class,'create'])->name('orderForm');
@@ -125,9 +103,21 @@ Route::post('/order/{id}',[OrderController::CLASS,'store'])->name('saveorder');
 
 //Paslaugų palyginimui
 Route::resource('/comparison',\App\Http\Controllers\ComparisonController::class);
-//Route::get('/comparison',[\App\Http\Controllers\ComparisonController::class,'index']);
 Route::post('/comparison',[\App\Http\Controllers\ComparisonController::class,'store'])->name('compare');
-//Route::post('/comparison/cancel',[\App\Http\Controllers\ComparisonController::class,'destroy'])->name('destroy');
-Route::get('/freelancerorders',[FreelancerController::class,'freelancerorders'])->name('freelancerorders');
+Route::get('/freelancerorders',[\App\Http\Controllers\FreelancerController::CLASS, 'freelancerorders'])->name('freelancerorders');
+
+//Projektai
+Route::get('count',[App\Http\Controllers\ProjectController::class,'count']);
+Route::get('/projects',[\App\Http\Controllers\ProjectController::class,'index'])->name('FormCreateProject');
 Route::resource('/projects',\App\Http\Controllers\ProjectController::class);
-Route::post('/projects',[\App\Http\Controllers\ProjectController::class,'store'])->name('includeprojecct');
+Route::get('/projects/{id}/create',[\App\Http\Controllers\ProjectController::class,'create'])->name('FormCreateProject');
+Route::post('/projects',[\App\Http\Controllers\ProjectController::class,'store'])->name('includeproject');
+Route::post('/projects/order',[\App\Http\Controllers\ProjectController::class,'orderProject'])->name('orderProject');
+//Atsiliepimai
+Route::get('offers/{offer}/review/',[\App\Http\Controllers\ReviewController::class,'create'])->name('FormCreateProject');
+Route::post('/review',[\App\Http\Controllers\ReviewController::class,'store'])->name('storeReview');
+//Freelancerio info
+Route::resource('/freelancers',\App\Http\Controllers\FreelancerController::class);
+Route::post('/freelancers/{{ $freelancer->id }}/freelancerInfoView',[\App\Http\Controllers\FreelancerController::CLASS,'show'])->name('showfreelancerInfo');
+Route::resource('/files',\App\Http\Controllers\FileController::class);
+

@@ -5,9 +5,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Profilio redagavimas</div>
-
                     <div class="card-body">
-
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="/change_profile" enctype="multipart/form-data">
                                 @csrf
@@ -23,10 +21,7 @@
 
                                 <label for="phoneNumber" class="col-md-4 control-label">Telefono numeris</label>
                                 <input type="text" name="phoneNumber" class="form-control" value="{{ $user->phoneNumber }}"required>
-{{--                                <input type="file" name="photo" class="form-control">--}}
-{{--                                <img src="{{asset('/uploads'. $user->photo)}}" alt="">--}}
                                 <input type="hidden" name="id" value="{{ $user->id }}">
-
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
                                         <button type="submit" class="btn btn-primary">
@@ -34,8 +29,6 @@
                                         </button>
                                     </div>
                                 </div>
-
-
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
                                         <button type="submit" class="btn btn-primary">
@@ -44,8 +37,6 @@
                                     </div>
                                 </div>
                             </form>
-
-
                         </div>
                     </div>
                 </div>

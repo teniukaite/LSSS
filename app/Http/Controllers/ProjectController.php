@@ -3,202 +3,107 @@
 namespace App\Http\Controllers;
 
 use App\Models\Offers;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use function PHPUnit\Framework\isNull;
 
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-
+        $sum=0;
         $projects = Project::where('client_id', Auth::user()->id)->get();
-
-//        $offers = Offers::sortBy('price',$request->sort ?? 'ASC')->get();
+        $projectsForSum=Project::where('client_id', Auth::user()->id)->where('status','=','0')->get();
         $offers =  Offers::All();
-//        $offers=Offers::All()->sortByDesc(function ($inquiry) {
-//            return sprintf('%s', $inquiry->price);
-//        })->values();
+        $allProjects = Project::all();
+        if ($projectsForSum != null) {
+            for($i=0; $i<count($projectsForSum); $i++){
+                if ($projectsForSum[$i]['price_content'] != 'EUR/VAL') {
+                    $sum=$sum+$projectsForSum[$i]['price'];
+                }
+                else{
+                    $temp = Offers::query()->where('id', '=', $projectsForSum[$i]['fk_service_id'])->get();
+                    $sum=$sum+$projectsForSum[$i]['price']*$temp[0]['duration'];
+                }
 
-        return view('projects.index', compact('projects'),[
+            }
+        }
+
+        return view('projects.index', compact('projects','sum'),[
             'users' => User::All(),
             'offers'=>$offers]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create($id)
     {
-        //
+
+        $offer = Offers::find($id);
+        return view('projects.create', compact('offer'));
     }
 
-//    public function store(Request $request)
-//    {
-//        $projects = Project::where('client_id', Auth::user()->id)->get();
-//        $includes= Project::get('fk_service_id');
-////        dd(  $includes );
-//        if ($projects->isNotEmpty())
-//        {
-//        foreach ($projects as $project) {
-//            $service_id = $request['id'];
-////            dd(  $service_id );
-//            var_dump($project);
-//              foreach ($includes as $include)
-////        {
-//            if ($project->fk_service_id != $include ) {
-////                dd($project->fk_service_id);
-//                Project::create([
-//                    'client_id' => Auth::user()->id,
-//                    'fk_service_id' => $request['id'],
-//                    'fk_freelancer_id' => $request['freelancerId'],
-//                    'price' => $request['price'],
-//                ]);
-//                return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
-//            }
-//
-//
-//            else{
-//                return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų kuriamą projektą');
-//            }
-//        }
-//        }
-//    }
-//        else {
-//            Project::create([
-//                'client_id' => Auth::user()->id,
-//                'fk_service_id' => $request['id'],
-//                'fk_freelancer_id' => $request['freelancerId'],
-//                'price' => $request['price'],
-//            ]);
-//            return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
-//        }
-
-//    }
-//    public function store(Request $request)
-//    {
-////        $projects = Project::where('client_id', Auth::user()->id)->get();
-//        $project = Project::find($request['id'])->where('client_id', Auth::user()->id)->get();
-//        dd($project);
-////        foreach ($projects as $project){
-//            if ($project == null) {
-//
-//                Project::create([
-//                    'client_id' => Auth::user()->id,
-//                    'fk_service_id' => $request['id'],
-//                    'fk_freelancer_id' => $request['freelancerId'],
-//                    'price' => $request['price'],
-//                ]);
-//                return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
-//
-//            } else {
-//                return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų kuriamą projektą');
-//
-//            }
-//    }
     public function store(Request $request)
     {
-        $projects = Project::where('client_id', Auth::user()->id)->get();
-//        dd($projects);
-//        $projects = Project::where('client_id', Auth::user()->id)->get('fk_service_id');
-//        dd($projects);
-//        $service_id = $request['id'];
+        $projects = Project::where('client_id', Auth::user()->id)->get()->where('status','=','0');
 
-       if ($projects->isNotEmpty()) {
-           $counter = 0;
-                    foreach ($projects as $project) {
+        $id = [];
 
-                        if ($request['id'] != $project->fk_service_id) {
-                            $counter++;
-                            dd($counter);
-                        }
-                    }
-       }
-}
-//                        if($counter>0)
-//                        {
-//
-//                          Project::create([
-//                                'client_id' => Auth::user()->id,
-//                                'fk_service_id' => $request['id'],
-//                                'fk_freelancer_id' => $request['freelancerId'],
-//                                'price' => $request['price'],
-//                            ]);
-//
-//                            return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
-//                        } else {
-//                            return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų kuriamą projektą');
-//                        }
+            foreach ($projects as $project) {
+                if (!empty($project->fk_service_id))
+                    array_push($id, $project->fk_service_id);
+            }
 
-
-//                else {
-//            Project::create([
-//                'client_id' => Auth::user()->id,
-//                'fk_service_id' => $request['id'],
-//                'fk_freelancer_id' => $request['freelancerId'],
-//                'price' => $request['price'],
-//            ]);
-//            return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
-//        }
-//    }
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+            if (in_array($request['id'], $id)) {
+                return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų kuriamą projektą');
+            } else {
+                Project::create([
+                    'client_id' => Auth::user()->id,
+                    'fk_service_id' => $request['id'],
+                    'fk_freelancer_id' => $request['freelancerId'],
+                    'price' => $request['price'],
+                    'price_content' => $request['price_content'],
+                    'time_id' => $request->get('time_id'),
+                    'status' => 0,
+                ]);
+                Schedule::where('id', $request->get('time_id'))->update(['status' => 1]);
+                return redirect::back()->with('success', 'Paslauga įtraukta į Jūsų kuriamą projektą');
+            }
+    }
+    public function orderProject(Request $request)
     {
-        //
+        $count=Project::where('client_id', Auth::user()->id)->where('status','=','0')->count();
+        $this->validate($request,[
+        ]);
+
+        if($count>=2){
+            Schedule::where('id', $request->get('time_id'))->update(['status' => 1]);
+        Project::where('status', 0)->update(['project_name' => $request['project_name']]);
+        Project::where('client_id', Auth::user()->id)->update(['status' => 1]);
+        return redirect('/orders');
+        }
+        else {
+            return redirect::back()->with('danger', 'Jūsų projektas nėra užbaigtas, jame turi būti bent dvi paslaugos');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function show(Project $project)
     {
-        //
+        $offer = Offers::find($project->fk_service_id);
+
+        return view('project.show', compact('project', 'offer'),
+            ['users' => User::All()]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Project $project)
     {
         Project::where('id', $project->id)->delete();
-//            $comparison->delete();
-//            Comparison::where('offerId')>delete();
+        Schedule::where('id', $project->time_id)->update(['status' => 0]);
+
         return redirect::back()->with('success', 'Paslauga pašalinta iš projekto');
     }
 }

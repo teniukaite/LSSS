@@ -1,80 +1,52 @@
-<!DOCTYPE html>
-<html lang="en-gb" dir="ltr">
+@extends('layouts.app')
 
+@section('style')
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 30vh;
+            object-fit: cover;
+        }
 
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LSSS</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
-    <script src="js/uikit.js" ></script>
-</head>
-<body>
+    </style>
+@endsection
 
-<header class="uk-cover-container uk-background-cover uk-background-norepeat uk-background-center-center"
-        style="background-image: url(img/logomain.png);">
-    <div class="uk-overlay uk-position-cover uk-overlay-video"></div>
-    <nav class="uk-navbar-container uk-letter-spacing-small uk-text-bold">
-        <div class="uk-container uk-container-large">
-            <div class="uk-position-z-index" data-uk-navbar>
-                <div class="uk-navbar">
-                    <a class="uk-navbar-item uk-logo" href="/home">Namų puslapis</a> &emsp;&emsp;
-
-                </div>
-                <div class="uk-navbar-center">
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
-<div class="uk-container">
+@section('content')
+<div class="container">
     <div class="row justify-content-center">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">Jūsų užsakymas: <strong>{{ $order->order_id }}</strong></div>
+                        <div class="card-header">Jūsų užsakytos paslaugos informacija: <strong></strong></div>
 
                         <div class="card-body">
-{{--                            @foreach($offer as $offer)--}}
-{{--                            <p><b>Užsakymo sukūrimo data:</b> {{ $order->price}}</p>--}}
-
-                            <p><b>Paslaugos pavadinimas:</b> {{ $offer->service_name }}</p>
-                            <p><b>Kaina:</b> {{ $offer->price }} eur.</p>
-                            <p><b>Kategorija:</b> {{ $offer->category}} </p>
+                            <p><b style="width: 200px;margin-right: 0px">PASLAUGA:</b>{{ $offer->service_name }}</p>
+                            <p><b style="width: 200px;margin-right: 0px">KAINA:</b> {{ $offer->price }} {{ $offer->price_content }}  </p>
+                            <p><b style="width: 200px;margin-right: 0px">TRUKMĖ:</b> {{ $offer->duration}} VAL.</p>
+                            <p><b style="width: 200px;margin-right: 0px">MIESTAS:</b> {{ $offer->city}} </p>
                             @foreach($users as $user)
                                 @if($offer->freelancerId== $user->id)
-                                    <p><b>Atlieka:</b>    <td><strong>{{$user->name}} {{$user->surname}}</strong></td>
                                 @endif
                             @endforeach
-{{--                            <p><b>Atlieka:</b> {{ $offer->freelancerId}}</p>--}}
-{{--                            <p><b>Žmonių kiekis:</b> {{ $offer->people_count }}</p>--}}
-{{--                            <p><b>Transporto tipas:</b> {{ $offer->off_transport_type->name }}</p>--}}
-{{--                            <p><b>Apgyvendinimo tipas:</b> {{ $offer->off_accommodation_type->name }}</p>--}}
-{{--                            <p><b>Maitinimo tipas:</b> {{ $offer->off_catering_type->name }}</p>--}}
-{{--                            <p><b>Šalis:</b> {{ $offer->off_country->name }}</p>--}}
-{{--                            @endforeach--}}
-                            <a class="btn btn-primary" href="{{ URL::previous() }}">Atgal</a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                            <div> <p><b>KLIENTAS:</b>    <td> {{$client->name}} {{$client->surname}}</td></div>
+                            <div> <p><b>UŽSAKYMO LAIKAS:</b>    <td>{{substr($orderTime->created_at,0,16)}}</td></div>
+                            <div> <p><b>ATLIKIMO LAIKAS:</b>    <td>{{$orderTime->date}} {{substr($orderTime->time,0,5)}} </td></div>
+                            <div> <p><b>KOMENTARAS:</b>    <td>{{$order->comment}}</td></div>
+                            <div> <p><b>KLIENTO EL.PAŠTAS:</b>    <td>{{$client->email}} </td></div>
+                            <div> <p><b>KLIENTO GIMIMO DATA:</b>    <td>{{$client->year_of_birth}} </td></div>
+                            <div> <p><b>KLIENTO TURIMI TAŠKAI:</b>    <td>{{$client->points}} </td></div>
+                           <hr>
+                           <a class="button button-primary" href="{{ URL::previous() }}">Atgal</a>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
 </div>
 
-<footer class="uk-border-dark-top">
-    <div class="uk-section uk-section-secondary">
-        <div class="uk-container uk-h6">
-            <div class="uk-flex-first@m">
-                <h2>   LSSS - Laisvai samdomų specialistų sistema - 2021.</h2>
-                <h3><a href="mailto:karrad@ktu.edu">Karolina Radzevičiūtė</a></h3>
-            </div>
-        </div>
-    </div>
-</footer>
-</body>
-</html>
+@endsection
+@section('footer')
+@endsection
+

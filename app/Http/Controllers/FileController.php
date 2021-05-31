@@ -1,11 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Categories;
 use App\Models\File;
-use App\Models\Offers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FileController extends Controller
@@ -16,8 +12,9 @@ class FileController extends Controller
         return view('files.index',['allFiles'=>$files]);
     }
 
-    public function show($id)
+    public function destroy(File $file)
     {
-        //
+        File::where('id', $file->id)->delete();
+        return redirect('/files/index')->with("success", "Darbo pavyzdys sėkmingai pašalintas");
     }
 }

@@ -37,19 +37,16 @@
                                                     </tr>
                                                 @foreach($times as $time)
                                                     @if($time->offer_id == $offer->id && $time->status==1)
-                                                            <tr>
+                                                         <tr>
                                                            <td><h4 style="color:#cc0099"><b>{{ $time->created_at}} </b></h4></td>
                                                             <td> <h4 style="color:#cc0099"><b>{{ $time->date}}  {{ substr($time->time, 0, 5)}}</b></h4></td>
-
-                                                            </tr>
-
+                                                         </tr>
                                                     @endif
                                                 @endforeach
                                                 </table>
                                             </div>
                                             <div class="card-footer text-center">
                                                 <a href="/offers/{{ $offer->id }}" class="btn btn-success  btn-block ">PERŽIŪRĖTI</a>
-
                                             </div>
                                         </div>
                                     </div>
@@ -64,7 +61,6 @@
             </div>
         </div>
     </div>
-
          <div class="container" style="margin-top: 50px">
              <div class="row justify-content-center">
                  <div class="col-md-14">
@@ -76,7 +72,6 @@
                                      @foreach ($offerChunk as $offer)
                                          <div class="col-md-6">
                                              <div class="card m-1">
-{{--                                                 <div class="card-body">--}}
                                                      <h3 class="card-header"><b>{{$offer->service_name}}</b></h3>
                                                      <p class="card-text">
                                                          KAINA: {{$offer->price}} {{$offer->price_content}}<br>
@@ -101,9 +96,7 @@
                                                          @endif
                                                      @endforeach
                                                      </table>
-{{--                                                 </div>--}}
                                                  <div class="card-footer text-center">
-{{--                                                     <a href="/offers/{{ $offer->id }}" class="button button-tertiary button-large" style="margin-bottom: 20px">Peržiūrėti paslaugos pasiūlymą</a>--}}
                                                      <a href="/schedule/{{ $offer->id }}/addTime"  class="button button-primary button-large" style="background-color: #009900!important;">PRIDĖTI REGISTRACIJOS LAIKĄ</a>
                                                  </div>
                                              </div>
@@ -119,8 +112,7 @@
                      </div>
                  </div>
              </div>
-
-                <a href="/home" class="button button-secondary button-large" style="margin-top: 20px">Atgal</a>
+             <a href="/home" class="button button-secondary button-large" style="margin-top: 20px">Atgal</a>
     </div>
 @endsection
 @section('footer')

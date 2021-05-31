@@ -11,7 +11,6 @@
 
                         <table class="table table-striped">
                             <tr>
-{{--                                <th>ID</th>--}}
                                 <th>Pavadinimas</th>
                                 <th>Data</th>
                                 <th>Kaina</th>
@@ -23,14 +22,13 @@
                                 @foreach($offers as $offer)
                                     @if($order->fk_service_id == $offer->id)
                                         <tr>
-{{--                                            <td><strong>{{ $order->id }}</strong></td>--}}
                                             <td><strong>{{ $offer->service_name }}</strong></td>
                                             @foreach(\App\Models\Schedule::all() as $time)
                                                 @if($time->id==$order->order_date)
                                                     <td><strong>{{ $time->date }}</strong></td>
                                                 @endif
                                             @endforeach
-                                            <td><strong>{{ $offer->price }}</strong></td>
+                                            <td><strong>{{ $offer->price }}{{ $offer->price_content}}</strong></td>
                                             @foreach($users as $user)
                                                 @if($order->fk_client_id== $user->id)
                                                     <td><strong>{{$user->name}} {{$user->surname}}</strong></td>
@@ -45,19 +43,13 @@
                                                     <button type="submit" class="btn btn-danger text-white">Atšaukti</button>
                                                 </form>
                                             </td>
-
-
                                         </tr>
                                     @endif
                                 @endforeach
                             @endforeach
                         </table>
-
                         <br>
                         <a class="button button-primary button-large" href="/offers ">Peržiūrėti visus paslaugų pasiūlymus</a>
-                        {{--                        <a href="/orders/order-history" class="btn btn-primary text-white mb-2">Peržiūrėti užsakymų istoriją</a>--}}
-                        {{--                        <br>--}}
-                        {{--                        <a href="/orders/payment-history" class="btn btn-primary text-white">Peržiūrėti apmokėjimų istoriją</a>--}}
                     </div>
                 </div>
             </div>

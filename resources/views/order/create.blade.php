@@ -29,7 +29,6 @@
                         <p><b style="color:rgb(204, 51, 153);">TRUKMĖ:</b> {{ $offer->duration }} VAL.</p>
                         <p><b style="color:rgb(204, 51, 153);">MIESTAS:</b> {{ $offer->city }}</p>
 
-
                         <label  for="$order_date"><p><b style="color:rgb(204, 51, 153);">REGISTRACIJOS DATA:</b></p></label>
                         <select required="required" class="select-large select-light {{ $errors->has('order_date') ? 'is-invalid' : '' }}"  name="order_date">
                             <option class="select" style="font-size: 20px" value="order_date" >Pasirinkite laiką:</option>
@@ -39,6 +38,7 @@
 
                                 @if($time->offer_id==$offer->id)
                                     @if($time->status==0)
+
                                     <option  style="font-size: 18px; color:black" {{ old('date')==$time->id ? 'selected' : '' }} value="{{$time->id}}">{{$time->date}}__{{ substr($time->time, 0, 5)}}</option>
                                     @endif
                                 @endif
@@ -57,7 +57,6 @@
                             <button type="submit" class="button button-primary button-large">Užsakyti</button>
                             <a class="button button-secondary button-large" href="{{ URL::previous() }}">Atgal</a>
                         </div>
-
                     </form>
                 </div>
             </div>

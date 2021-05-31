@@ -6,15 +6,12 @@
             <div class="col-md-20">
                 <div class="card">
                     <div class="card-header">PASLAUGOS, ATITINKANČIOS JŪSŲ FILTRĄ</div>
-
                     <div class="card-body">
-
                         @if (session('status'))
                             <div class="alert alert-success">
                                 {{ session('status') }}
                             </div>
                         @endif
-
                         <br>
                             <h4 style="color: rgb(96, 32, 64);margin-top: 30px"><b>RASKITE PASLAUGĄ PAGAL RAKTINĮ ŽODĮ:</b></h4>
                             <div class="col-md-12" style=" margin-bottom: 30px; margin-top: 30px" >
@@ -24,7 +21,6 @@
                                 </form>
                             </div>
                         <br>
-
                             <form method="POST" action="{{ route('filter') }}" class="mb-2">
                                 @csrf
                                 <div class="form-row" display="flexbox">
@@ -58,9 +54,7 @@
                                Paslaugų pasiūlymai intervale nuo {{$priceFrom}}€ iki {{$priceTo}}€.
                             </div>
                         @endif
-
                         <br>
-
                             @forelse($offers->chunk(3) as $offerChunk)
                                 <div class="row hidden-md-up mb-1">
                                     @foreach ($offerChunk as $offer)
@@ -73,12 +67,9 @@
                                                     <p class="card-text">
                                                         Kaina: {{$offer->price}}<br>
                                                         Miestas: {{ ucfirst($offer->city)}}
-                                                    {{--<div class="uk-text-muted uk-text-small">{{ $offer->description }}</div>--}}
-                                                    {{--                                        <p class="card-text">Daugiau informacijos pateikta pasiūlymo peržiūroje.</p>--}}
                                                 </div>
                                                 <div class="card-footer text-center">
                                                     <a href="/offers/{{ $offer->id }}" class="btn btn-success  btn-block ">Peržiūrėti</a>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +80,6 @@
                                     Pasiūlymų intervale nuo {{$priceFrom}}€ iki {{$priceTo}}€ neturime.
                                 </div>
                             @endforelse
-
                     </div>
                 </div>
             </div>

@@ -14,7 +14,6 @@
                     </form>
                 </div>
                 <a href="/offers" class="btn btn-success mb-1 text-white">Atgal</a>
-
                     <div class="card-body">
                         @forelse($offers->chunk(3) as $offerChunk)
                             <div class="row hidden-md-up mb-1">
@@ -36,7 +35,6 @@
                                     </div>
                                 @endforeach
                             </div>
-
         @empty
             <div class="alert alert-danger">
              Šiuo metu neturime pasiūlymų, atitinkančių Jūsų paiešką  <i class="material-icons" style="width: 200px">priority_high</i>
@@ -46,7 +44,6 @@
     </div>
 
 </div>
-
 @endsection
 @section('footer')
 @endsection

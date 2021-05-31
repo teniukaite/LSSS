@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 
 class Offers extends Model
-//    implements Searchable
+
 {
 
     protected $fillable = [

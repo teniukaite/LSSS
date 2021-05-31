@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Competencies;
 use App\Models\User;
-//use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
-//use App\Models\File;
+
 use Illuminate\Filesystem\Filesystem;
 
 class HomeController extends Controller
@@ -26,63 +26,44 @@ class HomeController extends Controller
     public function EditProfile()
     {
         $user = Auth::user();
+        $freelancers = Competencies::all();
         return view('profile.edit', [
-            'user'=>$user
+            'user'=>$user,
+            'freelancers'=>$freelancers
         ]);
+
+    }
+    public function ViewProfile()
+    {
+        $user = Auth::user();
+        $freelancers=Competencies::All();
+        return view('profile.index', compact('user','freelancers'));
 
     }
 
     public function Edit(Request $request)
     {
+        $fileModel = new User();
+        if($request->hasFile('file')){
+            $filename = $request->file->getClientOriginalName();
+            $request->image->storeAs('images',$filename,'public');
+            Auth()->user()->update(['photo'=>$filename]);
+        }
+
         $user = User::find($request->get('id'));
         $user->name = $request->get('name');
         $user->surname = $request->get('surname');
         $user->email = $request->get('email');
         $user->phoneNumber = $request->get('phoneNumber');
-//        $user->photo = $request->get('photo');
         $user->save();
-//        $attributes = $this->validateUser();
-//
-//        $user->update($attributes);
-//        return redirect()->back()->with("status", "Profilis atnaujintas sėkmingai!");
-        return view('home');
+
+        $freelancer= Competencies::query()->where('freelancerID',$request->get('freelancerID'))->update(['education'=> $request->get('education'),
+            'description'=> $request->get('description')]);
 
 
-        //        if($request->hasFile('photo'))
-//        {
-//            $destination= '/uploads'. $user->photo;
-//            if(File::exists($destination)){
-//                File::delete($destination);
-//
-//            }
-//
-//            $file=$request->file('photo');
-//            $extension=$file->getClientOriginalExtension();
-//            $filename= time(). '.'.$extension;
-//            $fileName = $file->time() . '_' . $request->file->getClientOriginalName();
-//            $file-> $request->file('file')->storeAs('upload', $fileName, 'public');
-//            $file->move('/uploads', $filename);
-//            $user->photo=$filename;
-//        }
-//
-//
-////
-//        $user-> update();
-//        $fileModel = new File;
-//        if ($request->file()) {
-//            $fileName = time() . '_' . $request->file->getClientOriginalName();
-//            $filePath = $request->file('file')->storePubliclyAs('upload', $fileName, 'public');
-//
-//            $fileModel->name = time() . '_' . $request->file->getClientOriginalName();
-//            $fileModel->file_path = '/' . $filePath;
-//            $fileModel->freelancerID = Auth::user()->id;
-//            $fileModel->save();
-//
-//            $freelancerID = Auth::user()->id;
-//            User::findOrNew($freelancerID)->update(['type' => "1"]);
-//
-//            return redirect('/profile')->with('success', 'Successfully updated your reservation!');
-        }
+        return redirect()->back()->with("status", "Profilis atnaujintas sėkmingai!");
+
+    }
     public function validateUser()
     {
         return request()->validate([
@@ -92,8 +73,7 @@ class HomeController extends Controller
             'phoneNumber' => 'required',
         ]);
     }
-
-
+    
     public function delete(Request $request) {
 
         $user = User::find($request->get('id'));

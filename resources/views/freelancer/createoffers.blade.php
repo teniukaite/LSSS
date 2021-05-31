@@ -1,30 +1,19 @@
 @extends('layouts.app')
-@section('style.css')
-    <style>
-
-    </style>
-
-@endsection
 @section('content')
-
-{{--    <div class="container">--}}
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">Aprašykite ir įkelkite savo paslaugą!</div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Aprašykite ir įkelkite savo paslaugą!</div>
                     <div class="card-body">
                         <form action="{{config('app.url')}}/offers" method="post"  enctype="multipart/form-data" >
-
                             @method('POST')
                             @csrf
-
                             <div class="form-input" style=" margin-bottom: 30px; margin-top: 30px;">
                                 <label><i class="material-icons"> drive_file_rename_outline  &nbsp</i>PAVADINIMAS:</label><br>
                                 <input type="text" name="service_name"
                                         class="form-control {{ $errors->has('service_name') ? 'is-invalid' : '' }}"
                                         placeholder="Įveskite pavadinimą:" value="{{ old('service_name') }}" >
                             </div>
-
                             <div  class="form-group">
                             <label> <i class="material-icons"> description  &nbsp</i>APRAŠYMAS:</label><br>
                                 <textarea  name="description" rows="4" cols="50"
@@ -41,9 +30,7 @@
                             <div class="form-group">
                             <label>  <i class="material-icons"> euro  &nbsp</i>KAINA:</label><br>
                                 <input  placeholder="Įveskite kainą" class="form-control" type="number" step="0.01"  min="1" name="price" required="required">
-
                             </div>
-
                             <div class="form-group">
                                 <select name="price_content"  required="required">
                                     <option>EUR/VAL</option>
@@ -51,7 +38,6 @@
                                 </select>
                             </div>
                         <br>
-
                         <label  for="$category" > <p>  <i class="material-icons"> category  &nbsp</i>KATEGORIJA:</p></label><br>
                         <select style=" margin-bottom: 30px; margin-top: 0px"required="required" class="form-control {{ $errors->has('categories') ? 'is-invalid' : '' }}"  name="category">
                             <option class="select" style="font-size: 20px" value="">Nustatykite paslaugos kategoriją:</option>
@@ -59,8 +45,6 @@
                                 <option  style="font-size: 18px" {{ old('category')==$type->id ? 'selected' : '' }} value="{{$type->id}}">{{$type->name}}</option>
                             @endforeach
                         </select>
-
-
                             <div class="form-group" style="justify-content: center">
                             <i class="material-icons"> apartment   &nbsp</i>
                             <label>MIESTAS:</label><br>
@@ -120,15 +104,9 @@
                         </div>
                         <br>
                         <button class="btn btn-success inline-block mb-1  text-white" type="submit" style="">Įkelti<i class="material-icons"> &nbsp publish </i></button>
-
                         </form>
                     </div>
-                    </div>
-                    </div>
-
-                    </div>
-{{--                </div>--}}
-            </div>
+                </div>
         </div>
     </div>
 @endsection

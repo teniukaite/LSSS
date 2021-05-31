@@ -7,10 +7,6 @@ use App\Models\Offers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\File;
-//use App\Models\File;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Redirect;
 
 class ComparisonController extends Controller
@@ -21,87 +17,38 @@ class ComparisonController extends Controller
 
 
         $comparisons = Comparison::where('clientId', Auth::user()->id)->get();
-
-//        $offers = Offers::sortBy('price',$request->sort ?? 'ASC')->get();
-        $offers =  Offers::All();
-//        $offers=Offers::All()->sortByDesc(function ($inquiry) {
-//            return sprintf('%s', $inquiry->price);
-//        })->values();
-
+        $offers = Offers::all()->sortByDesc('price');
+        $temp = Offers::query()->orderByDesc('price')->get();
         return view('comparison.index', compact('comparisons'),[
         'users' => User::All(),
-        'offers'=>$offers]);
+        'offers'=>$temp]);
     }
-
-//    public function include()
-//    {
-//
-//
-//    }
-//
-//    public function create($id)
-//    {
-//
-//    }
-
 
     public function  store(Request $request)
     {
-//        Request $request
-//        $offerId = Offers::find('id');
-//        $offerId = Offers::find($offer->id);
-        Comparison::create([
-            'clientId'=>Auth::user()->id,
-            'offerId' =>$request['id'],
-        ]);
-        return redirect::back()->with('success', 'Paslauga sėkmingai įtraukta į palyginimą');
+        $comparisons = Comparison::where('clientId', Auth::user()->id)->get();
+        $id = [];
+
+        foreach ($comparisons as $comparison) {
+            if (!empty($comparison->offerId))
+                array_push($id, $comparison->offerId);
+        }
+        if (in_array($request['id'], $id)) {
+            return redirect::back()->with('danger', 'Paslauga  jau yra įtraukta į Jūsų palyginimų sąrašą');
+        } else {
+            Comparison::create([
+                'clientId' => Auth::user()->id,
+                'offerId' => $request['id'],
+            ]);
+
+            return redirect::back()->with('success', 'Paslauga sėkmingai įtraukta į palyginimą');
+        }
     }
 
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function show($id)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Show the form for editing the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit($id)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, $id)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-        public function destroy(Offers $offer)
+        public function destroy(Comparison $comparison)
         {
-            Comparison::where('offerId', $offer->id)->delete();
-//            $comparison->delete();
-//            Comparison::where('offerId')>delete();
+            Comparison::where('id', $comparison->id)->delete();
             return redirect::back()->with('success', 'Palyginimas ištrintas');
         }
+
 }

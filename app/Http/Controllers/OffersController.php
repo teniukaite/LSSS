@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Offers;
 use App\Models\Categories;
+use App\Models\Review;
 use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,25 +19,13 @@ class OffersController extends Controller
 
     public function index(Request $request)
     {
-//        $categoryID = [];
         $offers = Offers::paginate(9);
-
-
 
         return view('Users.viewoffers',['allOffers'=>$offers,
                                              'categories' => Categories::All(),
                                             'users' => User::All()]);
     }
 
-//    public function filter($category){
-//
-////        $images = Image::where('category_id', '=', $category);
-//        $offers = Offers::paginate(9);
-//        $categories = Categories::all();
-//
-//    return View ('Users.filter', array('categories' => $categories),['allOffers'=>$offers]);
-//
-//}
     public function uploadCompetencies()
     {
         $data= Categories::all();
@@ -44,24 +33,18 @@ class OffersController extends Controller
     }
     public function show(Offers $offer)
     {
-//        $offer = Offers::where('freelancerId', Auth::user()->id)->get();
-
-        return view('Users.offershow', compact('offer'),[
+        $count=Schedule::where('offer_id', $offer->id)->where('date','>',Carbon::now()->format('Y-m-d'))->count();
+        return view('Users.offershow', compact('offer','count'),[
             'categories' => Categories::All(),
             'users' => User::All(),
             'times'=>Schedule::All()->where('date','>',Carbon::now()->format('Y-m-d'))->sortBy(function ($inquiry) {
                 return sprintf('%s%s', $inquiry->date, $inquiry->time);
             })->values(),
-            'allFiles'=>File::All()]);
-
-        return view('freelancer.offershow', compact('offer'));
+            'allFiles'=>File::All(),
+            'reviews' => Review::All()]);
     }
     public function edit(Offers $offer)
     {
-//        if(!Auth::user()->is_admin)
-//            return back();
-//
-//        else
             return view('freelancer.editoffer', compact('offer'),[
                 'categories' => Categories::All()]);
     }
@@ -76,8 +59,8 @@ class OffersController extends Controller
     {
         $this->validate($request,[
             'file' => 'required|mimes:png,jpg|max:2048',
-            'service_name' => ['required', 'string', 'max:255'],
-            'description' => ['required'],
+            'service_name' => ['required', 'string','min:5', 'max:25'],
+            'description' => ['required','min:15', 'max:255'],
             'city' => ['required', 'string', 'max:15'],
         ]);
 
@@ -112,32 +95,10 @@ class OffersController extends Controller
     {
         return view ('freelancer.createoffers');
     }
-//    protected function validator(array $data)
-//    {
-//        return Validator::make($data, [
-//            'service_name' => ['required', 'string', 'max:255'],
-//            'description' => ['required', 'string', 'between:30,600'],
-//            'price' => ['required', 'double', 'max:255'],
-//            'registration_times' => ['required','date_format:Y-m-d H:i:s'],
-//            'freelancerId' => ['required'],
-//
-//        ]);
-//    }
-
-
 
     public function update(Request $request,Offers $offer)
     {
-//        $attributes = $this->validateOffer();
-//
-//        $offer->update($attributes);
-//        $offer = Offers::find($request->get('id'));
-//        $offer->service_name = $request->get('service_name');
-//        $offer->description = $request->get('description');
-//        $offer->price = $request->get('price');
-//        $offer->category = $request->get('category');
-//        $offer->city = $request->get('city');
-//        $offer->update();
+
         $attributes = $this->validateOffer();
 
         $offer->update($attributes);
@@ -146,8 +107,9 @@ class OffersController extends Controller
     public function validateOffer()
     {
         return request()->validate([
-            'service_name' => 'required',
+            'service_name' => ['required', 'string','min:5', 'max:255'],
             'price' => 'required',
+            'price_content' => 'optional',
             'category' => 'required',
             'description' => 'required',
             'city' => 'required',
@@ -163,7 +125,6 @@ class OffersController extends Controller
     public function search(Request $request){
         $search_text=$_GET['query'];
         $offers=Offers::where('service_name','Like','%'.$search_text.'%')
-//        ->orWhere('category', 'LIKE', '%' . $search_text . '%')
         ->orWhere('city', 'LIKE', '%' . $search_text . '%')->get();
 
 
