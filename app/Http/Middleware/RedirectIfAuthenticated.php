@@ -22,7 +22,12 @@ class RedirectIfAuthenticated
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
+
             if (Auth::guard($guard)->check()) {
+
+                if(auth()->user()->type == 2) {
+                    return redirect()->route('admin');
+                }
                 return redirect(RouteServiceProvider::HOME);
             }
         }
